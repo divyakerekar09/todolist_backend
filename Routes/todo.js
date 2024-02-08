@@ -9,7 +9,8 @@ const Item = require("../Model/todoModel");
 // POST
 router.post("/create-item", function (request, response) {
   var itemObj = new Item({
-    item: request.body.item,
+    name: request.body.name,
+    description:request.body.description
   });
   itemObj
     .save()
@@ -59,7 +60,8 @@ router.put("/update-todo-by-id/:id", async function (request, response) {
       { _id: new mongoose.Types.ObjectId(request.params.id) },
       {
         $set: {
-          item: request.body.item,
+          name: request.body.name,
+          description:request.body.description
         },
       },
       { new: true }
