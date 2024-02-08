@@ -9,7 +9,7 @@ const todoRoute = require("./Routes/todo");
 
 app.use("/api", todoRoute);
 
-const DB = "mongodb+srv://divyakerekar:ranikerekar09@cluster0.0b9zenk.mongodb.net/";
+const DB = "mongodb+srv://test1:xFnRk2%40YFrX9zN4@cluster0.4ex5oid.mongodb.net/test_db?retryWrites=true&w=majority";
 
 mongoose
   .connect(DB)

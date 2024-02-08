@@ -9,7 +9,7 @@ const Item = require("../Model/todoModel");
 // POST
 router.post("/create-item", function (request, response) {
   var itemObj = new Item({
-    name: request.body.name,
+    item: request.body.item,
     description:request.body.description
   });
   itemObj
@@ -60,7 +60,7 @@ router.put("/update-todo-by-id/:id", async function (request, response) {
       { _id: new mongoose.Types.ObjectId(request.params.id) },
       {
         $set: {
-          name: request.body.name,
+          item: request.body.item,
           description:request.body.description
         },
       },
@@ -76,6 +76,25 @@ router.put("/update-todo-by-id/:id", async function (request, response) {
     }
   } catch (error) {
     console.log(error);
+    let respObj = utils.fnCustomResponse(false, "failure", error);
+    response.send(respObj);
+  }
+});
+router.patch("/toggle-status/:id", async function (request, response) {
+  try {
+    const existingItem = await Item.findById(request.params.id);
+
+    if (existingItem) {
+      existingItem.isCompleted = !existingItem.isCompleted; // Toggle isCompleted value
+      const updatedItem = await existingItem.save();
+      let respObj = utils.fnCustomResponse(true, "success", updatedItem);
+      response.send(respObj);
+    } else {
+      let respObj = utils.fnCustomResponse(false, "failure", "Item not found");
+      response.send(respObj);
+    }
+  } catch (error) {
+    console.error("Error handling status:", error);
     let respObj = utils.fnCustomResponse(false, "failure", error);
     response.send(respObj);
   }
